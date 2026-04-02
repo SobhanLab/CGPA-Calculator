@@ -1,69 +1,48 @@
-function addRemoveButtonListeners() {
-    const removeButtons = document.querySelectorAll('.remove-subject');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            button.parentElement.remove();
-        });
-    });
-}
+const gradePoints = {
+  "A+": 4.0,
+  "A": 3.75,
+  "A-": 3.5,
+  "B+": 3.25,
+  "B": 3.0,
+  "B-": 2.75,
+  "C+": 2.5,
+  "C": 2.25,
+  "D": 2.0,
+  "F": 0.0
+};
 
-function updatePlaceholder() {
-    const subjectInputs = document.querySelectorAll('.subject');
-    subjectInputs.forEach(input => {
-        const inputFields = input.querySelectorAll('input');
-        inputFields[0].setAttribute('placeholder', 'Subject');
-        inputFields[1].setAttribute('placeholder', 'Marks');
-        inputFields[2].setAttribute('placeholder', 'Credit');
-    });
-}
+function loadCourses() {
+  const sem = document.getElementById("semester").value;
+  const coursesDiv = document.getElementById("courses");
+  coursesDiv.innerHTML = "";
 
-document.getElementById('addSubject').addEventListener('click', function() {
-    const subjectsDiv = document.getElementById('subjects');
-    const subjectDiv = document.createElement('div');
-    subjectDiv.classList.add('subject');
-    subjectDiv.innerHTML = `
-        <input type="text" placeholder="Subject" class="subject-name">
-        <input type="number" step="0.01" placeholder="Marks" class="subject-marks">
-        <input type="number" step="0.01" placeholder="Credit" class="subject-credits">
-        <button type="button" class="remove-subject">X</button>
+  syllabus[sem].forEach((course, index) => {
+    coursesDiv.innerHTML += `
+      <div>
+        ${course.name} (${course.credit})
+        <select id="grade-${index}">
+          ${Object.keys(gradePoints).map(g => `<option>${g}</option>`).join("")}
+        </select>
+      </div>
     `;
-    subjectsDiv.appendChild(subjectDiv);
-    
-    updatePlaceholder();
-    
-    addRemoveButtonListeners();
-});
+  });
+}
 
-addRemoveButtonListeners();
-updatePlaceholder();
+function calculateCGPA() {
+  const sem = document.getElementById("semester").value;
+  let totalCredits = 0;
+  let totalPoints = 0;
 
-document.getElementById('cgpaForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const subjects = document.querySelectorAll('.subject');
-    let totalPoints = 0;
-    let totalCredits = 0;
+  syllabus[sem].forEach((course, index) => {
+    const grade = document.getElementById(`grade-${index}`).value;
+    const point = gradePoints[grade];
 
-    subjects.forEach(subject => {
-        const marks = parseFloat(subject.querySelector('.subject-marks').value);
-        const credits = parseFloat(subject.querySelector('.subject-credits').value);
-        const gradePoint = getGradePoint(marks);
-        totalPoints += gradePoint * credits;
-        totalCredits += credits;
-    });
+    totalCredits += course.credit;
+    totalPoints += course.credit * point;
+  });
 
-    const cgpa = (totalCredits > 0) ? (totalPoints / totalCredits).toFixed(2) : 0;
-    document.getElementById('result').innerText = `Your CGPA is: ${cgpa}`;
-});
+  const cgpa = totalPoints / totalCredits;
 
-function getGradePoint(marks) {
-    if (marks >= 80) return 4.0;
-    if (marks >= 75) return 3.75;
-    if (marks >= 70) return 3.50;
-    if (marks >= 65) return 3.25;
-    if (marks >= 60) return 3.0;
-    if (marks >= 55) return 2.75;
-    if (marks >= 50) return 2.50;
-    if (marks >= 45) return 2.25;
-    if (marks >= 40) return 2.0;
-    return 0.0;
+  document.getElementById("result").innerText =
+    "Your CGPA: " + cgpa.toFixed(2);
 }
