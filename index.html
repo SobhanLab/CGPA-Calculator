@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGPA Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>CGPA Calculator</title>
 </head>
 <body>
-    <div class="container">
-        <h1>CGPA Calculator</h1>
-        <form id="cgpaForm">
-            <div id="subjects">
-                <div class="subject">
-                    <input type="text" placeholder="Subject Name" class="subject-name">
-                    <input type="number" step="0.01" placeholder="Marks" class="subject-marks">
-                    <input type="text" placeholder="Credit" class="subject-credits">
-                    <button type="button" class="remove-subject">X</button>
-                </div>
-            </div>
-            <button type="button" id="addSubject">Add Subject</button>
-            <button type="submit">Calculate CGPA</button>
-        </form>
-        <div id="result"></div>
-    </div>
-    <script src="script.js"></script>
+
+<h2>CGPA Calculator</h2>
+
+<select id="semester" onchange="loadCourses()">
+  <option value="">Select Semester</option>
+  <option value="1-1">1st Year 1st Semester</option>
+  <option value="1-2">1st Year 2nd Semester</option>
+</select>
+
+<div id="courses"></div>
+
+<button onclick="calculateCGPA()">Calculate CGPA</button>
+
+<h3 id="result"></h3>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
