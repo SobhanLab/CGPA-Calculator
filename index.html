@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator - Varendra University</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+            </div>
+            <h1 class="title">CGPA Calculator</h1>
+            <p class="subtitle">Varendra University - CSE Department</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="single">Single Semester</button>
+            <button class="tab-btn" data-tab="cumulative">Cumulative CGPA</button>
+        </div>
+
+        <!-- Single Semester Tab -->
+        <div class="tab-content active" id="single-tab">
+            <div class="grid">
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Select Semester</h2>
+                        </div>
+                        <div class="card-body">
+                            <select id="semester-select" class="select-input">
+                                <option value="1">1st Year - 1st Semester</option>
+                                <option value="2">1st Year - 2nd Semester</option>
+                                <option value="3">2nd Year - 1st Semester</option>
+                                <option value="4">2nd Year - 2nd Semester</option>
+                                <option value="5">3rd Year - 1st Semester</option>
+                                <option value="6">3rd Year - 2nd Semester</option>
+                                <option value="7">4th Year - 1st Semester</option>
+                                <option value="8">4th Year - 2nd Semester</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title" id="semester-title">1st Year - 1st Semester</h2>
+                            <p class="card-subtitle" id="semester-credits">Total Credits: 18.5</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="subjects-list"></div>
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="saveSemesterData()">Save Semester Data</button>
+                                <button class="btn btn-secondary" onclick="clearCurrentSemester()">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="card gpa-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Semester GPA</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="gpa-display" id="semester-gpa">0.00</div>
+                            <p class="gpa-subtitle">Out of 4.00</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title-sm">Grade Scale Reference</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="grade-scale">
+                                <div class="grade-item"><span>A+</span><span>4.00</span></div>
+                                <div class="grade-item"><span>A</span><span>3.75</span></div>
+                                <div class="grade-item"><span>A-</span><span>3.50</span></div>
+                                <div class="grade-item"><span>B+</span><span>3.25</span></div>
+                                <div class="grade-item"><span>B</span><span>3.00</span></div>
+                                <div class="grade-item"><span>B-</span><span>2.75</span></div>
+                                <div class="grade-item"><span>C+</span><span>2.50</span></div>
+                                <div class="grade-item"><span>C</span><span>2.25</span></div>
+                                <div class="grade-item"><span>D</span><span>2.00</span></div>
+                                <div class="grade-item"><span>F</span><span>0.00</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cumulative Tab -->
+        <div class="tab-content" id="cumulative-tab">
+            <div class="grid">
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">All Semesters Overview</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="all-semesters-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="card cgpa-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Cumulative CGPA</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="gpa-display" id="cumulative-cgpa">0.00</div>
+                            <p class="gpa-subtitle">Out of 4.00</p>
+                            <div class="credits-info">
+                                <p class="credits-label">Credits Completed</p>
+                                <p class="credits-value" id="completed-credits">0.0 / 150</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card graduation-card">
+                        <div class="card-header">
+                            <h3 class="card-title-sm">Graduation Requirements</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="requirement-item">
+                                <span>Minimum CGPA:</span>
+                                <span class="requirement-value">2.50</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span>Required Credits:</span>
+                                <span class="requirement-value">150</span>
+                            </div>
+                            <div class="eligibility-status" id="eligibility-status">Keep Working!</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-danger" onclick="resetAllData()">Reset All Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card footer-card">
+            <div class="card-body">
+                <p class="footer-text">CGPA Formula: Sum of (Credit × Grade Points) / Total Credits</p>
+                <p class="footer-subtext">Data is saved locally in your browser. Clear browser data will reset all information.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
